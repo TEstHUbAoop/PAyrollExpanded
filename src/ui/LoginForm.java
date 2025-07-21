@@ -3,8 +3,6 @@ package ui;
 import dao.EmployeeDAO;
 import model.Employee;
 import util.DBConnection;
-import ui.HRDashboard;
-import ui.EmployeeDashboard;
 // NEW IMPORTS - Add these for the enhanced functionality
 import view.DashboardFactory;
 import util.PositionRoleMapper;
@@ -752,9 +750,6 @@ public class LoginForm extends JFrame {
      */
     private void openFallbackDashboard(Employee employee) {
         try {
-            // Import your existing dashboard classes here
-            // For example, if you have a MainDashboard class:
-            
             JOptionPane.showMessageDialog(this,
                 "⚠️ The advanced dashboard system encountered an issue.\n" +
                 "Opening basic employee interface.\n\n" +
@@ -762,12 +757,11 @@ public class LoginForm extends JFrame {
                 "Dashboard Loading Issue",
                 JOptionPane.WARNING_MESSAGE);
             
-            // You can uncomment and modify this based on your existing dashboard:
-            // MainDashboard mainDash = new MainDashboard(employee);
-            // mainDash.setVisible(true);
-            // this.dispose();
+            // Use the basic employee dashboard as fallback
+            view.EmployeeDashboard fallbackDash = new view.EmployeeDashboard(employee);
+            fallbackDash.setVisible(true);
+            this.dispose();
             
-            // For now, just close the login and let user try again
             LOGGER.warning("🔄 Fallback: Returning to login screen");
             
         } catch (Exception fallbackError) {

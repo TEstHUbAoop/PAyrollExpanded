@@ -69,10 +69,10 @@ public class DBConnection {
                 LOGGER.info("✅ Database connection test successful");
             } else {
                 LOGGER.warning("⚠️ Database connection test failed - connection invalid");
-            }
+        // CORRECTED: Using 'password' column (not 'password_hash' as that doesn't exist in our schema)
             return isValid;
         } catch (SQLException e) {
-            LOGGER.log(Level.WARNING, "⚠️ Database connection test failed", e);
+                "WHERE e.employee_id = ? AND c.password = ?";
             return false;
         }
     }
@@ -92,8 +92,8 @@ public class DBConnection {
         }
     }
     
-    /**
-     * Get database information
+                    // Enhanced debugging with correct column names  
+                    String debugQuery = "SELECT c.employee_id, c.password, " +
      * @return Database connection details (without password)
      */
     public static String getDatabaseInfo() {
@@ -103,17 +103,15 @@ public class DBConnection {
     
     /**
      * Check if database and required tables exist
-     * @return true if database is properly set up
-     */
+                                String actualPassword = debugRs.getString("password");
     public static boolean isDatabaseSetup() {
         try (Connection connection = getConnection()) {
             // Check if main tables exist
             String[] requiredTables = {
                 "employees", "credentials", "attendance", 
-                "payroll", "leave_request", "overtime"
-            };
+                                LOGGER.info(String.format("   Stored Password: %s", actualPassword));
             
-            for (String table : requiredTables) {
+                                LOGGER.info(String.format("   Password Match: %s", password.equals(actualPassword)));
                 try {
                     connection.prepareStatement("SELECT 1 FROM " + table + " LIMIT 1").executeQuery();
                 } catch (SQLException e) {
